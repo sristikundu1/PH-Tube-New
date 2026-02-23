@@ -22,6 +22,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
     <style type="text/tailwindcss">
+      .active {
+        @apply bg-[var(--color-primary)] text-white;
+      }
       @theme {
         --color-primary: rgba(255, 31, 61, 1);
         --font-inter: "Inter", sans-serif;
@@ -55,6 +58,8 @@
         >
           <div>
             <button
+              id="btn-all"
+              onclick="LoadVideos()"
               class="btn btn-sm bg-[rgba(37,37,37,0.15)] text-[rgba(37,37,37,0.7)]"
             >
               All
