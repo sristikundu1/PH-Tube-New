@@ -19,7 +19,35 @@ function formatTimeAgo(seconds) {
   return `${hours}hrs ${minutes} min ago`;
 }
 
+const showLoader = () => {
+  document.getElementById('loader').classList.remove('hidden')
+  document.getElementById('card-container').classList.add('hidden')
+}
+
+const removeLoader = () => {
+  document.getElementById('loader').classList.add('hidden')
+  document.getElementById('card-container').classList.remove('hidden')
+}
+
+let currentVideos = [];
+let isSorted = false;
+
+
+  // Sort cards by title
+function sortCard() {
+
+  if (!currentVideos.length) return;
+
+  currentVideos.sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+
+  displayVideos(currentVideos);
+}
+
+ 
 function loadCategory() {
+   showLoader();
   // fetch the category data
   fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
     .then((res) => res.json()) //convert it json data
@@ -65,11 +93,11 @@ const displayVideoDetails = (video) =>{
   <figure>
     <img
       src="${video.thumbnail}"
-      alt="Shoes" />
+      alt="${video.title}" />
   </figure>
   <div class="card-body">
     <h2 class="card-title">${video.title}</h2>
-    <p>${video.description}</p>
+    <p>${video.description || "No description available."}</p>
     
   </div>
 </div>
@@ -77,8 +105,9 @@ const displayVideoDetails = (video) =>{
 }
 
 // fetch card data
-function LoadVideos() {
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+function LoadVideos(search_text = '') {
+   showLoader();
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${search_text}`)
     .then((res) => res.json())
     .then((data) => {
       removeActiveClass();
@@ -89,6 +118,8 @@ function LoadVideos() {
 // display videos
 
 const displayVideos = (videos) => {
+  currentVideos = videos;
+ 
   const videoCardContainer = document.getElementById("card-container");
 
   videoCardContainer.innerHTML = "";
@@ -104,11 +135,13 @@ const displayVideos = (videos) => {
           </h1>
         </div>
     `;
+removeLoader();
+    return;
   }
-
+console.log(videos);
   // loop to show videos in card
   videos.forEach((video) => {
-    // console.log(video.thumbnail)
+    
     const cardDiv = document.createElement("div");
     cardDiv.innerHTML = `
     <div class="card bg-base-100 shadow-sm">
@@ -164,6 +197,8 @@ const displayVideos = (videos) => {
     `;
 
     videoCardContainer.appendChild(cardDiv);
+
+    removeLoader();
   });
 };
 
@@ -182,6 +217,17 @@ const loadCategoriesVideo = (id) => {
     });
 };
 
+
+document.getElementById('search-value').addEventListener('input', (e)=>{
+
+  const input = e.target.value;
+
+   if (input === "") {
+    LoadVideos();   // load all videos
+  } else {
+    LoadVideos(input);  // search videos
+  }
+})
 // by default all button remain active 
 document.addEventListener("DOMContentLoaded", function () {
   LoadVideos();

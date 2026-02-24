@@ -38,19 +38,47 @@
           <img class="w-32 h-auto" src="./Logo.png" alt="logo" />
         </div>
         <div>
-          <button class="btn btn-sm bg-[rgba(37,37,37,0.2)]">
-            Sort by view
-          </button>
+          <label class="input">
+            <svg
+              class="h-[1em] opacity-50"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <g
+                stroke-linejoin="round"
+                stroke-linecap="round"
+                stroke-width="2.5"
+                fill="none"
+                stroke="currentColor"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </g>
+            </svg>
+            <input
+              id="search-value"
+              type="search"
+              required
+              placeholder="Search"
+            />
+          </label>
         </div>
         <div>
-          <button class="btn btn-sm bg-[var(--color-primary)] text-white">
-            Blog
+          <button
+            onclick="sortCard()"
+            id="sort"
+            class="btn btn-sm bg-[var(--color-primary)] text-white"
+          >
+            Sort by view
           </button>
         </div>
       </div>
     </header>
 
     <main>
+      <section id="loader" class="text-center py-7 hidden">
+        <span class="loading loading-spinner loading-xl"></span>
+      </section>
       <section class="py-7">
         <div
           id="categories-container"
@@ -73,7 +101,7 @@
       </section>
 
       <!-- You can open the modal using ID.showModal() method -->
-      <button class="btn" onclick="my_modal_3.showModal()">open modal</button>
+      <!-- <button class="btn" onclick="my_modal_3.showModal()">open modal</button> -->
       <dialog id="Video_details" class="modal">
         <div class="modal-box">
           <form method="dialog">
